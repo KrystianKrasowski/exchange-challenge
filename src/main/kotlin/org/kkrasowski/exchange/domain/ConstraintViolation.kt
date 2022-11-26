@@ -6,5 +6,8 @@ enum class Violation {
     IS_BLANK,
     NOT_UNIQUE,
     INVALID_VALUE,
-    TOO_YOUNG
+    TOO_YOUNG,
+    IS_UNSUPPORTED,
+    IS_NEGATIVE,
+    IS_NOT_REGISTERED
 }

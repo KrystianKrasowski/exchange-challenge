@@ -6,6 +6,7 @@ import arrow.core.left
 import arrow.core.right
 import org.javamoney.moneta.Money
 import org.kkrasowski.exchange.domain.ConstraintViolation
+import org.kkrasowski.exchange.domain.TransactionIdGenerator
 import org.kkrasowski.exchange.domain.Violation
 import org.kkrasowski.exchange.domain.account.CreateAccountUseCaseFailure.Failure
 import org.kkrasowski.exchange.domain.account.CreateAccountUseCaseFailure.InvalidRequest
@@ -16,6 +17,7 @@ class NewUserAccountUseCase(
     private val accounts: UserAccountsRepository,
     private val transactions: TransactionsRepository,
     private val peselValidator: PeselValidator,
+    private val transactionIdGenerator: TransactionIdGenerator,
     private val clock: Clock
 ) {
 
@@ -43,7 +45,7 @@ class NewUserAccountUseCase(
     private fun createStartingBalance(accountId: AccountId, startingBalanceInPLN: BigDecimal?) {
         startingBalanceInPLN
             ?.let { Money.of(it, "PLN") }
-            ?.let { Transaction(accountId.value, it, clock.instant()) }
+            ?.let { Transaction(transactionIdGenerator.generate(), accountId.value, it, clock.instant()) }
             ?.apply { transactions.create(this) }
     }
 

@@ -5,6 +5,7 @@ import arrow.core.left
 import arrow.core.right
 import org.kkrasowski.exchange.domain.account.*
 import org.springframework.dao.DataIntegrityViolationException
+import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import java.math.BigDecimal
@@ -16,14 +17,25 @@ class UserAccountsDbRepository(private val jpaRepository: UserAccountsJpaReposit
         return UserAccountEntity.of(account)
             .runCatching { jpaRepository.save(this) }
             .map { it.id!!.right() }
-            .getOrElse { handleThrowable(it).left() }
+            .getOrElse { handleCreateError(it).left() }
     }
 
-    private fun handleThrowable(throwable: Throwable): CreateAccountRepositoryFailure {
-        return when (throwable) {
-            is DataIntegrityViolationException -> CreateAccountRepositoryFailure.PESEL_ALREADY_REGISTERED
-            else -> CreateAccountRepositoryFailure.REPOSITORY_FAILURE
-        }
+    override fun getByPesel(pesel: Pesel): Either<GetAccountByPeselRepositoryFailure, UserAccount> {
+        return pesel
+            .runCatching { jpaRepository.getByPesel(value) }
+            .map { it.toUserAccount() }
+            .map { it.right() }
+            .getOrElse { handleGetByPeselError(it).left() }
+    }
+
+    private fun handleCreateError(throwable: Throwable) = when (throwable) {
+        is DataIntegrityViolationException -> CreateAccountRepositoryFailure.PESEL_ALREADY_REGISTERED
+        else -> CreateAccountRepositoryFailure.REPOSITORY_FAILURE
+    }
+
+    private fun handleGetByPeselError(throwable: Throwable) = when (throwable) {
+        is EmptyResultDataAccessException -> GetAccountByPeselRepositoryFailure.PESEL_IS_NOT_REGISTERED
+        else -> GetAccountByPeselRepositoryFailure.REPOSITORY_FAILURE
     }
 }
 
@@ -66,3 +78,10 @@ open class UserAccountEntity(
         )
     }
 }
+
+private fun UserAccountEntity.toUserAccount() = UserAccount(
+    id = id!!,
+    firstName = firstName!!,
+    lastName = lastName!!,
+    pesel = Pesel(pesel!!)
+)
