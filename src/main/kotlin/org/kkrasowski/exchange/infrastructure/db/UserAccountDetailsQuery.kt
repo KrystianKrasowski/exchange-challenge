@@ -1,8 +1,8 @@
 package org.kkrasowski.exchange.infrastructure.db
 
-import org.kkrasowski.exchange.application.resources.AccountDetailsDto
-import org.kkrasowski.exchange.application.resources.BalanceDto
-import org.kkrasowski.exchange.application.resources.MoneyDto
+import org.kkrasowski.exchange.application.resources.dto.AccountDetailsDto
+import org.kkrasowski.exchange.application.resources.dto.BalanceDto
+import org.kkrasowski.exchange.application.resources.dto.MoneyDto
 
 class UserAccountDetailsQuery(private val accountsJpaRepository: UserAccountsJpaRepository) {
 

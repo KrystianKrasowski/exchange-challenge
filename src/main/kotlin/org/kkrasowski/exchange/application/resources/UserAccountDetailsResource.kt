@@ -1,5 +1,6 @@
 package org.kkrasowski.exchange.application.resources
 
+import org.kkrasowski.exchange.application.resources.dto.AccountDetailsDto
 import org.kkrasowski.exchange.infrastructure.db.UserAccountDetailsQuery
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -28,6 +29,3 @@ class UserAccountDetailsResource(private val detailsQuery: UserAccountDetailsQue
         ?: ResponseEntity(HttpStatus.NOT_FOUND)
 }
 
-data class AccountDetailsDto(val firstName: String, val lastName: String, val accounts: List<BalanceDto>)
-
-data class BalanceDto(val balance: MoneyDto)

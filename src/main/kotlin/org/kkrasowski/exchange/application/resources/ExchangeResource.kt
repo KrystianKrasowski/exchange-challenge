@@ -1,7 +1,7 @@
 package org.kkrasowski.exchange.application.resources
 
 import arrow.core.getOrHandle
-import org.kkrasowski.exchange.domain.account.CreateAccountUseCaseFailure
+import org.kkrasowski.exchange.application.resources.dto.ExchangedDto
 import org.kkrasowski.exchange.domain.exchange.ExchangeRequest
 import org.kkrasowski.exchange.domain.exchange.ExchangeUseCase
 import org.kkrasowski.exchange.domain.exchange.ExchangeUseCaseFailure
@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
-import java.math.BigDecimal
 import javax.money.MonetaryAmount
 
 @RestController
@@ -45,23 +44,3 @@ class ExchangeResource(private val exchangeUseCase: ExchangeUseCase) {
         .body(violation)
 }
 
-data class ExchangedDto(val value: MoneyDto) {
-
-    companion object {
-
-        fun of(value: MonetaryAmount) = ExchangedDto(
-            value = MoneyDto.of(value)
-        )
-    }
-}
-
-data class MoneyDto(val amount: BigDecimal, val currency: String) {
-
-    companion object {
-
-        fun of(money: MonetaryAmount) = MoneyDto(
-            amount = money.number.numberValue(BigDecimal::class.java),
-            currency = money.currency.currencyCode
-        )
-    }
-}
