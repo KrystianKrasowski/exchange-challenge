@@ -16,6 +16,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Profile
 import org.springframework.web.client.RestTemplate
 import java.time.Clock
 import javax.money.convert.ExchangeRateProvider
@@ -81,6 +82,11 @@ open class Configuration {
     open fun userAccountDetailsQuery(jpaRepository: UserAccountsJpaRepository): UserAccountDetailsQuery {
         return UserAccountDetailsQuery(jpaRepository)
     }
+}
+
+@Configuration
+@Profile("default")
+open class ClockConfiguration {
 
     @Bean
     open fun clock(): Clock {

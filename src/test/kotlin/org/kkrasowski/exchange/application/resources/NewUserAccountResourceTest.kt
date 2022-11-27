@@ -2,13 +2,19 @@ package org.kkrasowski.exchange.application.resources
 
 import org.assertj.core.api.Assertions.assertThat
 import org.hamcrest.CoreMatchers.`is`
-import org.hamcrest.Matchers.matchesRegex
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import org.kkrasowski.exchange.ClockConfiguration
+import org.kkrasowski.exchange.Configuration
 import org.kkrasowski.exchange.infrastructure.db.UserAccountsJpaRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.context.annotation.Profile
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories
+import org.springframework.test.context.ActiveProfiles
+import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
@@ -18,6 +24,7 @@ import java.math.BigDecimal
 @ExtendWith(SpringExtension::class)
 @SpringBootTest
 @AutoConfigureMockMvc
+@ActiveProfiles("test")
 class NewUserAccountResourceTest {
 
     @Autowired
