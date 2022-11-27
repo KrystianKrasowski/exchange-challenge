@@ -18,7 +18,7 @@ class ExchangeResource(private val exchangeUseCase: ExchangeUseCase) {
 
     @RequestMapping(
         path = ["/exchange"],
-        method = [RequestMethod.PUT],
+        method = [RequestMethod.POST],
         consumes = ["application/vnd.exchange-command.v1+json"],
         produces = ["application/vnd.exchanged.v1+json"]
     )

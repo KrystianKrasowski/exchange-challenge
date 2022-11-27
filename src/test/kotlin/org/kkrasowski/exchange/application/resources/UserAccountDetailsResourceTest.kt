@@ -51,7 +51,7 @@ class UserAccountDetailsResourceTest {
     }
 
     private fun exchange(request: String) {
-        mvc.perform(put("/exchange")
+        mvc.perform(post("/exchange")
             .contentType("application/vnd.exchange-command.v1+json")
             .content(request))
             .andExpect(status().isCreated)

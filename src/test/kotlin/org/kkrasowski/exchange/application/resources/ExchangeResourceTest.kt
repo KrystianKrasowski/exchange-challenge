@@ -3,17 +3,14 @@ package org.kkrasowski.exchange.application.resources
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration
-import org.assertj.core.api.Assertions
-import org.assertj.core.api.Assertions.*
+import org.assertj.core.api.Assertions.assertThat
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.Matchers
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.CsvSource
 import org.junit.jupiter.params.provider.ValueSource
 import org.kkrasowski.exchange.infrastructure.db.TransactionsJpaRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -23,6 +20,7 @@ import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
@@ -62,7 +60,7 @@ class ExchangeResourceTest {
 
         val request = """{ "transactionId": "1111", "pesel": "87010424178", "amount": 50.00, "currency": "PLN", "targetCurrency": "USD" }"""
 
-        mvc.perform(put("/exchange")
+        mvc.perform(post("/exchange")
             .contentType("application/vnd.exchange-command.v1+json")
             .content(request))
             .andExpect(status().isCreated)
@@ -76,7 +74,7 @@ class ExchangeResourceTest {
 
         val request = """{ "transactionId": "2222", "pesel": "87010433361", "amount": 50.49, "currency": "PLN", "targetCurrency": "USD" }"""
 
-        mvc.perform(put("/exchange")
+        mvc.perform(post("/exchange")
             .contentType("application/vnd.exchange-command.v1+json")
             .content(request))
 
@@ -92,12 +90,12 @@ class ExchangeResourceTest {
 
         val request = """{ "transactionId": "3333", "pesel": "87010432742", "amount": 50.00, "currency": "PLN", "targetCurrency": "USD" }"""
 
-        mvc.perform(put("/exchange")
+        mvc.perform(post("/exchange")
             .contentType("application/vnd.exchange-command.v1+json")
             .content(request))
             .andExpect(status().isCreated)
 
-        mvc.perform(put("/exchange")
+        mvc.perform(post("/exchange")
             .contentType("application/vnd.exchange-command.v1+json")
             .content(request))
             .andExpect(status().isUnprocessableEntity)
@@ -110,7 +108,7 @@ class ExchangeResourceTest {
     fun `should not exchange value due to empty transactionId`() {
         val request = """{ "pesel": "87010438175", "amount": 50.00, "currency": "PLN", "targetCurrency": "USD" }"""
 
-        mvc.perform(put("/exchange")
+        mvc.perform(post("/exchange")
             .contentType("application/vnd.exchange-command.v1+json")
             .content(request))
             .andExpect(status().isUnprocessableEntity)
@@ -123,7 +121,7 @@ class ExchangeResourceTest {
     fun `should not exchange value due to empty pesel`() {
         val request = """{ "transactionId": "4444", "amount": 50.00, "currency": "PLN", "targetCurrency": "USD" }"""
 
-        mvc.perform(put("/exchange")
+        mvc.perform(post("/exchange")
             .contentType("application/vnd.exchange-command.v1+json")
             .content(request))
             .andExpect(status().isUnprocessableEntity)
@@ -136,7 +134,7 @@ class ExchangeResourceTest {
     fun `should not exchange value due to unregistered pesel`() {
         val request = """{ "transactionId": "5555", "pesel": "000", "amount": 50.00, "currency": "PLN", "targetCurrency": "USD" }"""
 
-        mvc.perform(put("/exchange")
+        mvc.perform(post("/exchange")
             .contentType("application/vnd.exchange-command.v1+json")
             .content(request))
             .andExpect(status().isUnprocessableEntity)
@@ -149,7 +147,7 @@ class ExchangeResourceTest {
     fun `should not exchange value due to empty amount`() {
         val request = """{ "transactionId": "6666", "pesel": "87010438175", "currency": "PLN", "targetCurrency": "USD" }"""
 
-        mvc.perform(put("/exchange")
+        mvc.perform(post("/exchange")
             .contentType("application/vnd.exchange-command.v1+json")
             .content(request))
             .andExpect(status().isUnprocessableEntity)
@@ -162,7 +160,7 @@ class ExchangeResourceTest {
     fun `should not exchange value due to negative amount`() {
         val request = """{ "transactionId": "7777", "pesel": "87010438175", "amount": -50.00, "currency": "PLN", "targetCurrency": "USD" }"""
 
-        mvc.perform(put("/exchange")
+        mvc.perform(post("/exchange")
             .contentType("application/vnd.exchange-command.v1+json")
             .content(request))
             .andExpect(status().isUnprocessableEntity)
@@ -175,7 +173,7 @@ class ExchangeResourceTest {
     fun `should not exchange value due to empty currency`() {
         val request = """{ "transactionId": "8888", "pesel": "87010438175", "amount": 50.00, "targetCurrency": "USD" }"""
 
-        mvc.perform(put("/exchange")
+        mvc.perform(post("/exchange")
             .contentType("application/vnd.exchange-command.v1+json")
             .content(request))
             .andExpect(status().isUnprocessableEntity)
@@ -196,7 +194,7 @@ class ExchangeResourceTest {
     fun `should not exchange value due to unsupported currency`(currency: String) {
         val request = """{ "transactionId": "9999", "pesel": "87010438175", "amount": 50.00, "currency": "$currency" }"""
 
-        mvc.perform(put("/exchange")
+        mvc.perform(post("/exchange")
             .contentType("application/vnd.exchange-command.v1+json")
             .content(request))
             .andExpect(status().isUnprocessableEntity)
@@ -209,7 +207,7 @@ class ExchangeResourceTest {
     fun `should not exchange value due to empty target currency`() {
         val request = """{ "transactionId": "8888", "pesel": "87010438175", "amount": 50.00, "currency": "PLN" }"""
 
-        mvc.perform(put("/exchange")
+        mvc.perform(post("/exchange")
             .contentType("application/vnd.exchange-command.v1+json")
             .content(request))
             .andExpect(status().isUnprocessableEntity)
@@ -230,17 +228,13 @@ class ExchangeResourceTest {
     fun `should not exchange value due to unsupported target currency`(targetCurrency: String) {
         val request = """{ "transactionId": "8888", "pesel": "87010438175", "amount": 50.00, "currency": "PLN", "targetCurrency": "$targetCurrency" }"""
 
-        mvc.perform(put("/exchange")
+        mvc.perform(post("/exchange")
             .contentType("application/vnd.exchange-command.v1+json")
             .content(request))
             .andExpect(status().isUnprocessableEntity)
             .andExpect(header().string("Content-Type", "application/vnd.constraint-violation.v1+json"))
             .andExpect(jsonPath("$.subject", `is`("targetCurrency")))
             .andExpect(jsonPath("$.violation", `is`("IS_UNSUPPORTED")))
-    }
-
-    fun `should not exchange value due to not enough money on account`() {
-        // parameterized for PLN and USD
     }
 
     private fun mockUSDExchangeRate(purchase: Double, sell: Double) {
