@@ -24,12 +24,12 @@ class NewUserAccountResource(private val newUserAccountUseCase: NewUserAccountUs
     fun create(@RequestBody request: CreateUserAccountRequest): ResponseEntity<*> {
         return newUserAccountUseCase
             .create(request)
-            .map { it.toResponseEntity() }
+            .map { createResponseEntity(request.pesel!!) }
             .getOrHandle { it.toResponseEntity() }
     }
 
-    private fun AccountId.toResponseEntity() = ResponseEntity.status(201)
-        .header("Location", "/accounts/$value")
+    private fun createResponseEntity(pesel: String) = ResponseEntity.status(201)
+        .header("Location", "/accounts/$pesel")
         .build<Nothing>()
 
     private fun CreateAccountUseCaseFailure.toResponseEntity() = when (this) {

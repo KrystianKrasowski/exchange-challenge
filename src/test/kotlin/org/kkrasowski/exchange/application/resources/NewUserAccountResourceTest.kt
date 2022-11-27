@@ -34,7 +34,7 @@ class NewUserAccountResourceTest {
             .contentType("application/vnd.new-account.v1+json")
             .content(request))
             .andExpect(status().isCreated)
-            .andExpect(header().string("Location", matchesRegex("\\/accounts\\/[0-9]+")))
+            .andExpect(header().string("Location", `is`("/accounts/86020313188")))
     }
 
     @Test
