@@ -1,6 +1,6 @@
 package org.kkrasowski.exchange.infrastructure.db
 
-import org.kkrasowski.exchange.domain.account.Transaction
+import org.kkrasowski.exchange.domain.Transaction
 import org.springframework.data.jpa.repository.JpaRepository
 import java.math.BigDecimal
 import java.sql.Timestamp

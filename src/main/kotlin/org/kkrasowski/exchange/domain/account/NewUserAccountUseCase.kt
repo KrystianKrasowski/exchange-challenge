@@ -5,9 +5,7 @@ import arrow.core.flatMap
 import arrow.core.left
 import arrow.core.right
 import org.javamoney.moneta.Money
-import org.kkrasowski.exchange.domain.ConstraintViolation
-import org.kkrasowski.exchange.domain.TransactionIdGenerator
-import org.kkrasowski.exchange.domain.Violation
+import org.kkrasowski.exchange.domain.*
 import org.kkrasowski.exchange.domain.account.CreateAccountUseCaseFailure.Failure
 import org.kkrasowski.exchange.domain.account.CreateAccountUseCaseFailure.InvalidRequest
 import java.math.BigDecimal
@@ -61,4 +59,3 @@ sealed class CreateAccountUseCaseFailure {
     object Failure : CreateAccountUseCaseFailure()
 }
 
-data class AccountId(val value: Long)

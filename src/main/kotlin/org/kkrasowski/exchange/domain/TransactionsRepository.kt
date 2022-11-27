@@ -1,4 +1,4 @@
-package org.kkrasowski.exchange.domain.account
+package org.kkrasowski.exchange.domain
 
 import arrow.core.Either
 import arrow.core.None

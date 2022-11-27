@@ -1,4 +1,4 @@
-package org.kkrasowski.exchange.domain.account
+package org.kkrasowski.exchange.domain
 
 interface PeselValidator {
 

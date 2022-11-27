@@ -4,9 +4,9 @@ import arrow.core.Either
 import arrow.core.None
 import arrow.core.left
 import arrow.core.right
-import org.kkrasowski.exchange.domain.account.Transaction
-import org.kkrasowski.exchange.domain.account.TransactionsRepository
-import org.kkrasowski.exchange.domain.account.TransactionsRepositoryFailure
+import org.kkrasowski.exchange.domain.Transaction
+import org.kkrasowski.exchange.domain.TransactionsRepository
+import org.kkrasowski.exchange.domain.TransactionsRepositoryFailure
 import org.springframework.dao.DataIntegrityViolationException
 
 /*

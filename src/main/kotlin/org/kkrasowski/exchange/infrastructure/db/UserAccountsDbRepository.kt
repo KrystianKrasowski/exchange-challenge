@@ -3,6 +3,7 @@ package org.kkrasowski.exchange.infrastructure.db
 import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
+import org.kkrasowski.exchange.domain.*
 import org.kkrasowski.exchange.domain.account.*
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.dao.EmptyResultDataAccessException
@@ -36,7 +37,7 @@ class UserAccountsDbRepository(private val jpaRepository: UserAccountsJpaReposit
 }
 
 private fun UserAccountEntity.toUserAccount() = UserAccount(
-    id = id!!,
+    id = AccountId(id!!),
     firstName = firstName!!,
     lastName = lastName!!,
     pesel = Pesel(pesel!!)

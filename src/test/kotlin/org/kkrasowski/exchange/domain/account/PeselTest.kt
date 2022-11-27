@@ -1,9 +1,9 @@
 package org.kkrasowski.exchange.domain.account
 
 import org.assertj.core.api.Assertions
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
+import org.kkrasowski.exchange.domain.Pesel
 import java.time.Clock
 import java.time.Instant
 import java.time.ZoneId

@@ -1,8 +1,7 @@
 package org.kkrasowski.exchange.domain.account
 
 import org.javamoney.moneta.Money
-import org.kkrasowski.exchange.domain.ConstraintViolation
-import org.kkrasowski.exchange.domain.Violation
+import org.kkrasowski.exchange.domain.*
 import java.math.BigDecimal
 import java.time.Clock
 
@@ -27,7 +26,8 @@ data class CreateUserAccountRequest constructor(
 
 private class Validator(private val request: CreateUserAccountRequest,
                         private val clock: Clock,
-                        private val peselValidator: PeselValidator) {
+                        private val peselValidator: PeselValidator
+) {
 
     private val firstNameBlankViolation
         get() = ConstraintViolation("firstName", Violation.IS_BLANK)

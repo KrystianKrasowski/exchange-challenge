@@ -1,8 +1,8 @@
 package org.kkrasowski.exchange.infrastructure
 
 import org.hibernate.validator.internal.constraintvalidators.hv.pl.PESELValidator
-import org.kkrasowski.exchange.domain.account.Pesel
-import org.kkrasowski.exchange.domain.account.PeselValidator
+import org.kkrasowski.exchange.domain.Pesel
+import org.kkrasowski.exchange.domain.PeselValidator
 
 class HibernatePeselValidator : PeselValidator {
 

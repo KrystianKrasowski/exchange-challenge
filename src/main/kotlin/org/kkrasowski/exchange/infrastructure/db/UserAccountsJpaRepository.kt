@@ -1,6 +1,6 @@
 package org.kkrasowski.exchange.infrastructure.db
 
-import org.kkrasowski.exchange.domain.account.NewUserAccount
+import org.kkrasowski.exchange.domain.NewUserAccount
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import java.math.BigDecimal

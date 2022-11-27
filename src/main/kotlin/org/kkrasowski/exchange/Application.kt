@@ -1,10 +1,10 @@
 package org.kkrasowski.exchange
 
+import org.kkrasowski.exchange.domain.PeselValidator
 import org.kkrasowski.exchange.domain.TransactionIdGenerator
+import org.kkrasowski.exchange.domain.TransactionsRepository
+import org.kkrasowski.exchange.domain.UserAccountsRepository
 import org.kkrasowski.exchange.domain.account.NewUserAccountUseCase
-import org.kkrasowski.exchange.domain.account.PeselValidator
-import org.kkrasowski.exchange.domain.account.TransactionsRepository
-import org.kkrasowski.exchange.domain.account.UserAccountsRepository
 import org.kkrasowski.exchange.domain.exchange.ExchangeUseCase
 import org.kkrasowski.exchange.infrastructure.HibernatePeselValidator
 import org.kkrasowski.exchange.infrastructure.UUIDTransactionIdGenerator

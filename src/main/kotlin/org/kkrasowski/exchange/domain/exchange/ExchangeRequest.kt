@@ -4,14 +4,38 @@ import arrow.core.Validated
 import arrow.core.invalid
 import arrow.core.valid
 import org.kkrasowski.exchange.domain.ConstraintViolation
+import org.kkrasowski.exchange.domain.TransactionId
 import org.kkrasowski.exchange.domain.Violation
+import org.kkrasowski.exchange.domain.Pesel
 import java.math.BigDecimal
+import javax.money.CurrencyUnit
+import javax.money.Monetary
+import javax.money.MonetaryAmount
 
 data class ExchangeRequest(val transactionId: String?,
                            val pesel: String?,
                            val amount: BigDecimal?,
                            val currency: String?,
                            val targetCurrency: String?) {
+
+    val requiredTransactionId: TransactionId
+        get() = transactionId
+            ?.let { TransactionId(it) }
+            ?: error("Transaction id is null")
+
+    val requiredPesel: Pesel
+        get() = pesel
+            ?.let { Pesel(it) }
+            ?: error("Pesel is null")
+
+    val requiredAmount: MonetaryAmount
+        get() = Monetary.getDefaultAmountFactory()
+            .setNumber(amount)
+            .setCurrency(currency)
+            .create()
+
+    val requiredTargetCurrency: CurrencyUnit
+        get() = Monetary.getCurrency(targetCurrency)
 
     fun validate(): Validated<ConstraintViolation, ExchangeRequest> {
         return Validator(this).validate()
