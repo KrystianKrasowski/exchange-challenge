@@ -2,8 +2,6 @@ package org.kkrasowski.exchange.domain.account
 
 import arrow.core.Either
 import arrow.core.flatMap
-import arrow.core.left
-import arrow.core.right
 import org.javamoney.moneta.Money
 import org.kkrasowski.exchange.domain.*
 import org.kkrasowski.exchange.domain.account.CreateAccountUseCaseFailure.Failure
@@ -20,18 +18,16 @@ class NewUserAccountUseCase(
 ) {
 
     fun create(request: CreateUserAccountRequest): Either<CreateAccountUseCaseFailure, AccountId> {
-        return request.validate()
+        return validate(request)
             .map { it.toNewUserAccount() }
             .flatMap { createAccount(it) }
             .tap { createStartingBalance(it, request.startingBalanceInPLN) }
     }
 
-    private fun CreateUserAccountRequest.validate(): Either<CreateAccountUseCaseFailure, CreateUserAccountRequest> {
-        return getConstraintViolations(peselValidator, clock)
-            .firstOrNull()
-            ?.let { InvalidRequest(it) }
-            ?.left()
-            ?: right()
+    private fun validate(request: CreateUserAccountRequest): Either<CreateAccountUseCaseFailure, CreateUserAccountRequest> {
+        return request.validate(peselValidator, clock)
+            .mapLeft { InvalidRequest(it) }
+            .toEither()
     }
 
     private fun createAccount(account: NewUserAccount): Either<CreateAccountUseCaseFailure, AccountId> {
