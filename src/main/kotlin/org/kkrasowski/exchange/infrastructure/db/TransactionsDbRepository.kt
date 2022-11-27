@@ -8,11 +8,6 @@ import org.kkrasowski.exchange.domain.account.Transaction
 import org.kkrasowski.exchange.domain.account.TransactionsRepository
 import org.kkrasowski.exchange.domain.account.TransactionsRepositoryFailure
 import org.springframework.dao.DataIntegrityViolationException
-import org.springframework.data.jpa.repository.JpaRepository
-import org.springframework.transaction.annotation.Transactional
-import java.math.BigDecimal
-import java.sql.Timestamp
-import javax.persistence.*
 
 /*
  * This implementation could finally use some persistent queue and create transaction asynchronously
@@ -40,52 +35,4 @@ open class TransactionsDbRepository(private val jpaRepository: TransactionsJpaRe
     }
 
     private fun createEntities(transactions: List<Transaction>) = transactions.map { TransactionEntity.of(it) }
-}
-
-interface TransactionsJpaRepository : JpaRepository<TransactionEntity, Long> {
-
-    fun getByTransactionIdAndCurrency(transactionId: String, currency: String): TransactionEntity
-}
-
-@Entity
-@Table(
-    name = "transactions",
-    uniqueConstraints = [
-        UniqueConstraint(
-            columnNames = ["transaction_id", "currency"]
-        )
-    ]
-)
-open class TransactionEntity(
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long? = null,
-
-    @Column(name = "transaction_id")
-    var transactionId: String? = null,
-
-    @Column(name = "account_id")
-    var accountId: Long? = null,
-
-    @Column(name = "amount")
-    var amount: BigDecimal? = null,
-
-    @Column(name = "currency")
-    var currency: String? = null,
-
-    @Column(name = "created_at")
-    var createdAt: Timestamp? = null,
-) {
-
-    companion object {
-
-        fun of(transaction: Transaction) = TransactionEntity(
-            transactionId = transaction.id.value,
-            accountId = transaction.accountId,
-            amount = transaction.value.number.numberValue(BigDecimal::class.java),
-            currency = transaction.value.currency.currencyCode,
-            createdAt = transaction.createdAt.let { Timestamp.from(it) }
-        )
-    }
 }
