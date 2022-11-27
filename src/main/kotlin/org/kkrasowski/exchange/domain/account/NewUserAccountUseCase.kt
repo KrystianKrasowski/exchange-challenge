@@ -39,7 +39,7 @@ class NewUserAccountUseCase(
     private fun createStartingBalance(accountId: AccountId, startingBalanceInPLN: BigDecimal?) {
         startingBalanceInPLN
             ?.let { Money.of(it, "PLN") }
-            ?.let { Transaction(transactionIdGenerator.generate(), accountId.value, it, clock.instant()) }
+            ?.let { Transaction(transactionIdGenerator.generate(), accountId, it, clock.instant()) }
             ?.apply { transactions.create(this) }
     }
 

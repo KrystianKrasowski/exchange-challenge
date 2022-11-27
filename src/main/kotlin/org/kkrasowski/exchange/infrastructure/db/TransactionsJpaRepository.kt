@@ -46,7 +46,7 @@ open class TransactionEntity(
 
         fun of(transaction: Transaction) = TransactionEntity(
             transactionId = transaction.id.value,
-            accountId = transaction.accountId,
+            accountId = transaction.accountId.value,
             amount = transaction.value.number.numberValue(BigDecimal::class.java),
             currency = transaction.value.currency.currencyCode,
             createdAt = transaction.createdAt.let { Timestamp.from(it) }

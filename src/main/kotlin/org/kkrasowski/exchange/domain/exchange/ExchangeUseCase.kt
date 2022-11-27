@@ -63,13 +63,13 @@ class ExchangeUseCase(private val accountsRepository: UserAccountsRepository,
     private fun createTransactions(request: ExchangeRequest, accountId: AccountId, exchanged: MonetaryAmount) = listOf(
         Transaction(
             id = request.requiredTransactionId,
-            accountId = accountId.value,
+            accountId = accountId,
             value = request.requiredAmount.negate(),
             createdAt = clock.instant()
         ),
         Transaction(
             id = request.requiredTransactionId,
-            accountId = accountId.value,
+            accountId = accountId,
             value = exchanged,
             createdAt = clock.instant()
         )
