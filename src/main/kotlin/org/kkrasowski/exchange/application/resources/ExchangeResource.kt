@@ -15,10 +15,10 @@ import java.math.BigDecimal
 import javax.money.MonetaryAmount
 
 @RestController
-@RequestMapping("/exchange")
 class ExchangeResource(private val exchangeUseCase: ExchangeUseCase) {
 
     @RequestMapping(
+        path = ["/exchange"],
         method = [RequestMethod.PUT],
         consumes = ["application/vnd.exchange-command.v1+json"],
         produces = ["application/vnd.exchanged.v1+json"]

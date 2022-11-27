@@ -9,14 +9,14 @@ import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/accounts")
-class UserAccountResource(private val newUserAccountUseCase: NewUserAccountUseCase) {
+class NewUserAccountResource(private val newUserAccountUseCase: NewUserAccountUseCase) {
 
     /*
      * I did not use the bean validation mechanism, because I decided that validation is a part of the domain, and all failure result should be
      * handled in one place. Another reason is that some of the validations I can do only in the domain with access to repositories etc.
      */
     @RequestMapping(
+        path = ["/accounts"],
         method = [RequestMethod.POST],
         consumes = ["application/vnd.new-account.v1+json"],
         produces = ["application/vnd.constraint-violation.v1+json"]

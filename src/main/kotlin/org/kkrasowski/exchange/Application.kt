@@ -78,6 +78,11 @@ open class Configuration {
     }
 
     @Bean
+    open fun userAccountDetailsQuery(jpaRepository: UserAccountsJpaRepository): UserAccountDetailsQuery {
+        return UserAccountDetailsQuery(jpaRepository)
+    }
+
+    @Bean
     open fun clock(): Clock {
         return Clock.systemUTC()
     }

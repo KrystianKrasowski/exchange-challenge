@@ -43,6 +43,8 @@ interface UserAccountsJpaRepository : JpaRepository<UserAccountEntity, Long> {
 
     fun getByPesel(pesel: String): UserAccountEntity
 
+    fun findByPesel(pesel: String): UserAccountEntity?
+
     @Query("SELECT SUM(t.amount) FROM UserAccountEntity u JOIN u.transactions t WHERE u.pesel = :pesel AND t.currency = :currency")
     fun fetchBalanceByPeselAndCurrency(pesel: String, currency: String): BigDecimal?
 }

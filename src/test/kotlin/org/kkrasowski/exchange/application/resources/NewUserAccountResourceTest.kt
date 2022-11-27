@@ -18,7 +18,7 @@ import java.math.BigDecimal
 @ExtendWith(SpringExtension::class)
 @SpringBootTest
 @AutoConfigureMockMvc
-class UserAccountResourceTest {
+class NewUserAccountResourceTest {
 
     @Autowired
     private lateinit var mvc: MockMvc
